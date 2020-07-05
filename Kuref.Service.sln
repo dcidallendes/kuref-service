@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kuref.Service", "Kuref.Service\Kuref.Service.csproj", "{AE24BDC5-B2B0-4832-8BEC-C68DDEACF71D}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{FF4BF9DF-E7E5-4E0D-B5B6-C5D5BBB9F107}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{AE24BDC5-B2B0-4832-8BEC-C68DDEACF71D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE24BDC5-B2B0-4832-8BEC-C68DDEACF71D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE24BDC5-B2B0-4832-8BEC-C68DDEACF71D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF4BF9DF-E7E5-4E0D-B5B6-C5D5BBB9F107}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF4BF9DF-E7E5-4E0D-B5B6-C5D5BBB9F107}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF4BF9DF-E7E5-4E0D-B5B6-C5D5BBB9F107}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF4BF9DF-E7E5-4E0D-B5B6-C5D5BBB9F107}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

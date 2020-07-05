@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  kuref.service:
+    image: ${DOCKER_REGISTRY-}kuref
+    build:
+      context: .
+      dockerfile: Kuref.Service/Dockerfile
