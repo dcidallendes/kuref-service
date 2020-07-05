@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Kuref.Service
 {
@@ -31,6 +30,8 @@ namespace Kuref.Service
 
             services.AddDbContext<KurefContext>(options =>
             options.UseNpgsql(Configuration.GetConnectionString("KurefContext")));
+
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +41,13 @@ namespace Kuref.Service
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Kuref Measurements API V1");
+            });
 
             app.UseHttpsRedirection();
 
