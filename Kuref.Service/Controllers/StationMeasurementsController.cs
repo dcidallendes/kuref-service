@@ -36,7 +36,7 @@ namespace Kuref.Service.Controllers
         public async Task<ActionResult> PostStationMeasurements([FromBody] StationMeasurementsDto stationMeasurements)
         {
             int stationId = stationMeasurements.StationId;
-            List<int> measurementTypes = stationMeasurements.Measurements.Keys.ToList();
+            List<int> measurementTypes = stationMeasurements.Measurements.Select(m => m.MeasurementTypeId).Distinct().ToList();
 
             if (context.Stations.Count(s => s.Id == stationId) == 0)
             {
@@ -50,21 +50,19 @@ namespace Kuref.Service.Controllers
 
             DateTime currentTime = DateTime.UtcNow;
 
-            foreach(KeyValuePair<int, List<MeasurementDto>> measurements in stationMeasurements.Measurements)
+            
+            foreach(MeasurementDto measurement in stationMeasurements.Measurements)
             {
-                foreach(MeasurementDto measurement in measurements.Value)
+                Measurement dbMeasurement = new Measurement
                 {
-                    Measurement dbMeasurement = new Measurement
-                    {
-                        StationId = stationId,
-                        MeasurementTypeId = measurements.Key,
-                        Value = measurement.Value,
-                        MeasurementTime = measurement.MeasurementTime,
-                        RegistrationTime = currentTime
-                    };
+                    StationId = stationId,
+                    MeasurementTypeId = measurement.MeasurementTypeId,
+                    Value = measurement.Value,
+                    MeasurementTime = measurement.MeasurementTime,
+                    RegistrationTime = currentTime
+                };
 
-                    await context.AddAsync(dbMeasurement);
-                }
+                await context.AddAsync(dbMeasurement);
             }
             await context.SaveChangesAsync();
 

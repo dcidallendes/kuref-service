@@ -7,6 +7,6 @@ namespace Kuref.Service.Dto
     {
         public int StationId { get; set; }
 
-        public Dictionary<int, List<MeasurementDto>> Measurements { get; set; }
+        public List<MeasurementDto> Measurements { get; set; }
     }
 }
