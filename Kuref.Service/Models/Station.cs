@@ -21,6 +21,8 @@ namespace Kuref.Service.Models
 
         public double Longitude { get; set; }
 
+        public double Altitude { get; set; }
+
         public IEnumerable<PhysicalDeviceAssignation> PhysicalDeviceAssignations { get; set; }
 
         public IEnumerable<Measurement> Measurements { get; set; }
