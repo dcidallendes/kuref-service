@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Npgsql;
 
 namespace Kuref.Service
 {
@@ -40,8 +41,31 @@ namespace Kuref.Service
 
             services.AddControllers();
 
-            services.AddDbContext<KurefContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("KurefContext")));
+            services.AddDbContext<KurefContext>(options => {
+
+                string connectionString = Configuration.GetConnectionString("KurefContext");
+                string databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+                if (databaseUrl != null)
+                {
+                    Uri databaseUri = new Uri(databaseUrl);
+                    string[] userInfo = databaseUri.UserInfo.Split(':');
+
+                    var builder = new NpgsqlConnectionStringBuilder
+                    {
+                        Host = databaseUri.Host,
+                        Port = databaseUri.Port,
+                        Username = userInfo[0],
+                        Password = userInfo[1],
+                        Database = databaseUri.LocalPath.TrimStart('/'),
+                        SslMode = SslMode.Prefer,
+                        TrustServerCertificate = true
+                    };
+                    connectionString = builder.ToString();
+                }
+
+                options.UseNpgsql(connectionString);
+            });
 
             services.AddSwaggerGen(c =>
             {
