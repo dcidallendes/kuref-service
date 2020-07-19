@@ -40,8 +40,9 @@ namespace Kuref.Service
 
             services.AddControllers();
 
+            string databaseUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
             services.AddDbContext<KurefContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("KurefContext")));
+            options.UseNpgsql(databaseUrl ?? Configuration.GetConnectionString("KurefContext")));
 
             services.AddSwaggerGen(c =>
             {
