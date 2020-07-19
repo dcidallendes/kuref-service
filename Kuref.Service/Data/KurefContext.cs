@@ -11,6 +11,7 @@ namespace Kuref.Service.Data
         public DbSet<PhysicalDevice> PhysicalDevices { get; set; }
         public DbSet<PhysicalDeviceAssignation> PhysicalDeviceAssignations { get; set; }
         public DbSet<Station> Stations { get; set; }
+        public DbSet<ApiKey> ApiKeys { get; set; }
 
         public KurefContext(DbContextOptions<KurefContext> options) : base(options)
         {
@@ -20,6 +21,9 @@ namespace Kuref.Service.Data
         {
             modelBuilder.Entity<PhysicalDeviceAssignation>()
                 .HasKey(p => new { p.MeasurementTypeId, p.PhysicalDeviceId, p.StationId });
+            modelBuilder.Entity<ApiKey>()
+                .HasIndex(a => a.Key)
+                .IsUnique();
         }
     }
 }

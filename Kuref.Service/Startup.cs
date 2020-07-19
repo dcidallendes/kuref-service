@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AspNetCore.Authentication.ApiKey;
 using Kuref.Service.Data;
+using Kuref.Service.Providers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace Kuref.Service
 {
@@ -28,6 +31,13 @@ namespace Kuref.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(ApiKeyDefaults.AuthenticationScheme)
+            .AddApiKeyInHeaderOrQueryParams<ApiKeyProvider>(options =>
+            {
+                options.Realm = "Kuref";
+                options.KeyName = "X-API-KEY";
+            });
+
             services.AddControllers();
 
             services.AddDbContext<KurefContext>(options =>
@@ -38,6 +48,13 @@ namespace Kuref.Service
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+
+                c.AddSecurityDefinition("Api Key Header", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Name = "X-API-KEY",
+                    Type = SecuritySchemeType.ApiKey,
+                });
             });
         }
 
@@ -61,6 +78,7 @@ namespace Kuref.Service
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
