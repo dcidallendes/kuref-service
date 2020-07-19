@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Kuref.Service.Data;
 using Kuref.Service.Dto;
 using Kuref.Service.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,8 +32,10 @@ namespace Kuref.Service.Controllers
         /// <returns></returns>
         /// <response code="400">Station id or measuretment type(s) not found</response>
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> PostStationMeasurements([FromBody] StationMeasurementsDto stationMeasurements)
         {
             int stationId = stationMeasurements.StationId;
